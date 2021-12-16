@@ -4,7 +4,7 @@ version: "3.9"
 # Les conteneurs à démarrer
 services: 
   # Création du conteneur db
-  db: 
+  thibaultp-db: 
     # Téléchargement de la dernière version de MySQL
     image: mysql:latest
     volumes:
@@ -22,10 +22,10 @@ services:
       MYSQL_PASSWORD: wordpress
 
   # Création du conteneur wordpress
-  wordpress:
+  thibaultp-wordpress:
     depends_on:
       # Ajout d'une dépanneur au conteneur db
-      - db
+      - thibaultp-db
     # Téléchargement de la dernière version de wordpress
     image: wordpress:latest
     volumes:
