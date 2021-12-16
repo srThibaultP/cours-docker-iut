@@ -1,0 +1,50 @@
+# Version du moteur docker compose
+version: "3.9"
+
+# Les conteneurs à démarrer
+services: 
+  # Création du conteneur db
+  db: 
+    # Téléchargement de la dernière version de MySQL
+    image: mysql:latest
+    volumes:
+      # Création du volume db_data, bindé à /var/lib/mysql
+      - db_data:/var/lib/mysql
+    # Liste des environements
+    environment:
+      # MDP MySQL
+      MYSQL_ROOT_PASSWORD: rtlry
+      # Nom de la base de données
+      MYSQL_DATABASE: wordpress
+      # Nom de l'utilisateur
+      MYSQL_USER: wordpress
+      # MDP de l'utilisateur
+      MYSQL_PASSWORD: wordpress
+
+  # Création du conteneur wordpress
+  wordpress:
+    depends_on:
+      # Ajout d'une dépanneur au conteneur db
+      - db
+    # Téléchargement de la dernière version de wordpress
+    image: wordpress:latest
+    volumes:
+      # Création du volume wordpress_data, bindé à /var/www/html
+      - wordpress_data:/var/www/html
+    ports:
+      # Ecoute de wordpress sur le port 80
+      - "80:80"
+    environment:
+      # Connection à la base de données
+      WORDPRESS_DB_HOST: db:3306
+      # Nom de l'utilisateur BDD
+      WORDPRESS_DB_USER: wordpress
+      # MDP de l'utilisateur BDD
+      WORDPRESS_DB_PASSWORD: wordpress
+      # Nom de la base de données
+      WORDPRESS_DB_NAME: wordpress
+
+# Les volumes sont vides car on ne sauvegarde pas les données
+volumes:
+  db_data: 
+  wordpress_data: 
